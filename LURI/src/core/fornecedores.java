@@ -16,6 +16,7 @@ public class fornecedores extends javax.swing.JPanel {
      */
     public fornecedores() {
         initComponents();
+        //teste
     }
 
     /**
