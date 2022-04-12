@@ -9,12 +9,12 @@ package core;
  *
  * @author Formação
  */
-public class fornecedores extends javax.swing.JPanel {
+public class Fornecedores extends javax.swing.JPanel {
 
     /**
      * Creates new form fornecedores
      */
-    public fornecedores() {
+    public Fornecedores() {
         initComponents();
         //teste
     }
