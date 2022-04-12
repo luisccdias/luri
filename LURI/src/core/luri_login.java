@@ -82,6 +82,10 @@ public class luri_login extends javax.swing.JFrame {
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
         try {
+//            String user = "luri";
+//            String password = "123.Abc";
+//            String baseDados = "luridb";
+//            String server = "n1nlmysql13plsk.secureserver.net";
             String user = "root";
             String password = "";
             String baseDados = "luridb";
