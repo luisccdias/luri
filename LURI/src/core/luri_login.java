@@ -23,6 +23,7 @@ public class luri_login extends javax.swing.JFrame {
      */
     public luri_login() {
         initComponents();
+
     }
 
     /**
@@ -60,7 +61,7 @@ public class luri_login extends javax.swing.JFrame {
                             .addComponent(txt_user, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                             .addComponent(txt_pass)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
+                        .addGap(107, 107, 107)
                         .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(103, Short.MAX_VALUE))
         );
@@ -71,9 +72,9 @@ public class luri_login extends javax.swing.JFrame {
                 .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(btn_login)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -90,21 +91,17 @@ public class luri_login extends javax.swing.JFrame {
             String username = txt_user.getText();
             char[] c = txt_pass.getPassword();
             String pass = "";
-            for(int i = 0; i < txt_pass.getPassword().length; i++)
-            {
+            for (int i = 0; i < txt_pass.getPassword().length; i++) {
                 pass = pass + c[i];
             }
             System.out.println(c);
             String s = "select * from utilizador where utilizador='" + username + "' and senha='" + pass + "';";
             ResultSet rs = db.executeQuery(s);
-            if(rs.next())
-            {
+            if (rs.next()) {
                 luri_main m = new luri_main();
                 m.setVisible(true);
-                this.setVisible(false);                
-            }
-            else
-            {
+                this.setVisible(false);
+            } else {
                 JOptionPane.showMessageDialog(rootPane, "O nome ou a palavra-passe estão errados!");
             }
         } catch (SQLException ex) {
