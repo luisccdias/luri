@@ -5,6 +5,14 @@
  */
 package core;
 
+import db.DBWorker;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Formação
@@ -16,7 +24,11 @@ public class Fornecedores extends javax.swing.JPanel {
      */
     public Fornecedores() {
         initComponents();
-        //teste
+
+        tbl_fornecedor.removeColumn(tbl_fornecedor.getColumnModel().getColumn(0));
+
+        listar_tabela();
+
     }
 
     /**
@@ -35,34 +47,39 @@ public class Fornecedores extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_nome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txt_morada = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txt_codpostal = new javax.swing.JTextField();
+        txt_nif = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbx_pais = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cbx_tipo = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txt_email = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txt_telm = new javax.swing.JTextField();
         btn_adicionar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_fornecedor = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField7 = new javax.swing.JTextField();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        btn_pesquisar = new javax.swing.JButton();
+        txt_filtro = new javax.swing.JTextField();
+        cbx_filtro = new javax.swing.JComboBox<>();
+        btn_eliminar = new javax.swing.JButton();
+        btn_editar = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(1100, 768));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel1.setText("Fornecedor");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setPreferredSize(new java.awt.Dimension(1075, 696));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setText("Nome:");
@@ -70,19 +87,19 @@ public class Fornecedores extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel2.setText("Adicionar fornecedor");
 
-        jTextField1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        txt_nome.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel4.setText("Morada:");
 
-        jTextField2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        txt_morada.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel5.setText("Código Postal:");
 
-        jTextField3.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        txt_codpostal.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jTextField4.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        txt_nif.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel6.setText("NIF:");
@@ -90,112 +107,116 @@ public class Fornecedores extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel7.setText("País:");
 
-        jComboBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Rússia", " Alemanha", " Turquia", " França", " Reino Unido", " Itália", " Espanha", " Ucrânia", " Polónia", " Roménia", " Cazaquistão", " Países Baixos", " Bélgica", " Grécia", " Chéquia", " Portugal", " Hungria", " Suécia", " Azerbaijão", " Bielorrússia", " Áustria", " Suíça", " Bulgária", " Sérvia", " Dinamarca", " Finlândia", " Eslováquia", " Noruega", " Irlanda", " Croácia", " Bósnia e Herzegovina", " Geórgia", " Moldávia", " Armênia", " Lituânia", " Albânia", " Macedônia do Norte", " Eslovênia", " Letônia", " Kosovo", " Estónia", " Chipre", " Montenegro", " Luxemburgo", " Malta", " Islândia", " Jersey (RU)", " Ilha de Man (RU)", " Andorra", " Guernsey (RU)", " Ilhas Feroé (Dinamarca)", " Liechtenstein", " Mónaco", " Gibraltar (RU)", " San Marino", " Ilhas Åland (Finlândia)", " Svalbard e Jan Mayen (Noruega)", " Vaticano" }));
+        cbx_pais.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        cbx_pais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alemanha", "Áustria", "Bélgica", "Bulgária", "Chipre", "Dinamarca", "Eslováquia", "Eslovénia", "Espanha", "Estónia", "Finlândia", "França", "Grécia", "Hungria", "Irlanda", "Itália", "Letónia", "Lituânia", "Luxemburgo", "Malta", "Países Baixos", "Polónia", "Portugal", "República Checa", "Roménia", "Suécia" }));
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel8.setText("Tipo:");
 
-        jComboBox2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbx_tipo.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        cbx_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Eletricidade", "Pichelaria", "Construção", "Informática", "Outros" }));
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel9.setText("Email:");
 
-        jTextField5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        txt_email.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel10.setText("Telm.:");
 
-        jTextField6.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        txt_telm.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         btn_adicionar.setText("Adicionar");
+        btn_adicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_adicionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(299, 299, 299)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbx_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbx_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txt_codpostal, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txt_morada, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txt_nif, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btn_adicionar, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                .addComponent(txt_telm))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(359, 359, 359)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(299, 299, 299)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btn_adicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))))))
-                .addContainerGap(368, Short.MAX_VALUE))
+                        .addGap(56, 56, 56)
+                        .addComponent(jLabel2)))
+                .addContainerGap(327, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(57, 57, 57)
                 .addComponent(jLabel2)
-                .addGap(142, 142, 142)
+                .addGap(96, 96, 96)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_morada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_nif, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_codpostal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbx_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbx_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_telm, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(btn_adicionar)
                 .addGap(207, 207, 207))
@@ -206,21 +227,21 @@ public class Fornecedores extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(72, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
+                .addContainerGap(85, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 905, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 684, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGap(33, 33, 33)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        jTabbedPane1.addTab("Adicionar Fornecedor", jPanel1);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_fornecedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -228,55 +249,74 @@ public class Fornecedores extends javax.swing.JPanel {
                 "id", "Nome", "Email", "Contacto", "Morada", "Código-Postal", "NIF", "País", "Tipo"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_fornecedor);
 
-        jLabel11.setText("jLabel11");
+        jLabel11.setText("Pesquisar: ");
 
-        jButton1.setText("jButton1");
+        btn_pesquisar.setText("Pesquisar");
+        btn_pesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pesquisarActionPerformed(evt);
+            }
+        });
 
-        jTextField7.setText("jTextField7");
+        cbx_filtro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "NIF", "Tipo" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btn_eliminar.setText("Eliminar Fornecedor");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+
+        btn_editar.setText("Editar Fornecedor");
+        btn_editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(384, 384, 384)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 490, Short.MAX_VALUE)))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1075, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btn_eliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_editar)
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(438, 438, 438)
-                .addComponent(jButton1)
+                .addGap(377, 377, 377)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbx_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_pesquisar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
+                .addGap(35, 35, 35)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbx_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_pesquisar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_eliminar)
+                    .addComponent(btn_editar))
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("tab2", jPanel2);
+        jTabbedPane1.addTab("Lista Fornecedores", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -285,33 +325,353 @@ public class Fornecedores extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane1)
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTabbedPane1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarActionPerformed
+        if (btn_adicionar.getText().equals("Adicionar")) {
+            if (!(txt_nome.getText().equals("") || txt_nome.getText() == null) && !(txt_nif.getText().equals("") || txt_nif.getText() == null)) {
+                try {
+                    String user = "luri";
+                    String password = "123.Abc";
+                    String baseDados = "luridb";
+                    String server = "n1nlmysql13plsk.secureserver.net";
+//            String user = "root";
+//            String password = "";
+//            String baseDados = "luridb";
+//            String server = "127.0.0.1";
+                    DBWorker db;
+                    db = new DBWorker(server, user, password, baseDados);
 
+                    String nome = txt_nome.getText();
+                    String morada = txt_morada.getText();
+                    String nif = txt_nif.getText();
+                    String cod_postal = txt_codpostal.getText();
+                    String pais = (String) cbx_pais.getSelectedItem();
+                    String tipo = (String) cbx_tipo.getSelectedItem();
+                    String email = txt_email.getText();
+                    String telm = txt_telm.getText();
+
+                    String s = "INSERT INTO fornecedor(id, nome, morada, nif, cod_postal, pais, tipo, email, contacto)"
+                            + " VALUES (null,'" + nome + "','" + morada + "', " + Integer.parseInt(nif) + ",'" + cod_postal + "','" + pais + "','" + tipo + "','" + email + "','" + telm + "') ;";
+
+                    db.executeUpdate(s);
+                    JOptionPane.showMessageDialog(this, "Dados Inseridos com sucesso!");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "O Código postal inserido está incorreto. Exemplo: 1111-111");
+                }
+                listar_tabela();
+                limpa();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nome e NIF são campos obrigatórios.");
+            }
+        } else {
+            if (!(txt_nome.getText().equals("") || txt_nome.getText() == null) && !(txt_nif.getText().equals("") || txt_nif.getText() == null)) {
+                try {
+                    String user = "luri";
+                    String password = "123.Abc";
+                    String baseDados = "luridb";
+                    String server = "n1nlmysql13plsk.secureserver.net";
+//            String user = "root";
+//            String password = "";
+//            String baseDados = "luridb";
+//            String server = "127.0.0.1";
+                    DBWorker db;
+                    db = new DBWorker(server, user, password, baseDados);
+
+                    String nome = txt_nome.getText();
+                    String morada = txt_morada.getText();
+                    String nif = txt_nif.getText();
+                    String cod_postal = txt_codpostal.getText();
+                    String pais = (String) cbx_pais.getSelectedItem();
+                    String tipo = (String) cbx_tipo.getSelectedItem();
+                    String email = txt_email.getText();
+                    String telm = txt_telm.getText();
+                 
+                    String s = "UPDATE fornecedor "
+                            + "SET nome = '"+nome+"', morada = '"+morada+"', nif = '"+Integer.parseInt(nif)+"', cod_postal = '"+cod_postal+"', pais = '"+pais+"', "
+                            + "tipo = '"+tipo+"', email = '"+email+"', contacto = '"+telm+"' "
+                            + "WHERE id ="+id_edit+";";
+                    
+                    db.executeUpdate(s);
+                    System.out.println(s);
+                    JOptionPane.showMessageDialog(this, "Dados Alterados com sucesso!");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "O Código postal inserido está incorreto. Exemplo: 1111-111");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Nome e NIF são campos obrigatórios.");
+            }
+            listar_tabela();
+            limpa();
+            btn_adicionar.setText("Adicionar");
+        }
+
+    }//GEN-LAST:event_btn_adicionarActionPerformed
+
+    private void btn_pesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pesquisarActionPerformed
+
+        try {
+            String user = "luri";
+            String password = "123.Abc";
+            String baseDados = "luridb";
+            String server = "n1nlmysql13plsk.secureserver.net";
+//            String user = "root";
+//            String password = "";
+//            String baseDados = "luridb";
+//            String server = "127.0.0.1";
+            DBWorker db;
+            db = new DBWorker(server, user, password, baseDados);
+
+            String pesquisa = (String) cbx_filtro.getSelectedItem();
+
+            switch (pesquisa) {
+                case "Nome":
+                       try {
+                    db = new DBWorker(server, user, password, baseDados);
+
+                    DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+                    Object[] row = new Object[9];
+                    model.setRowCount(0);
+
+                    String s = "SELECT * FROM fornecedor where " + pesquisa + " like '" + txt_filtro.getText() + "%';";
+
+                    ResultSet rs = db.executeQuery(s);
+
+                    while (rs.next()) {
+
+                        row[0] = rs.getInt("id");
+                        row[1] = rs.getString("nome");
+                        row[2] = rs.getString("email");
+                        row[3] = rs.getString("contacto");
+                        row[4] = rs.getString("morada");
+                        row[5] = rs.getString("cod_postal");
+                        row[6] = rs.getInt("nif");
+                        row[7] = rs.getString("pais");
+                        row[8] = rs.getString("tipo");
+                        model.addRow(row);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(luri_login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+                case "NIF":
+                        try {
+                    db = new DBWorker(server, user, password, baseDados);
+
+                    DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+                    Object[] row = new Object[9];
+                    model.setRowCount(0);
+                    String s = "SELECT * FROM fornecedor where " + pesquisa + " like '" + txt_filtro.getText() + "%';";
+
+                    ResultSet rs = db.executeQuery(s);
+
+                    while (rs.next()) {
+
+                        row[0] = rs.getInt("id");
+                        row[1] = rs.getString("nome");
+                        row[2] = rs.getString("email");
+                        row[3] = rs.getString("contacto");
+                        row[4] = rs.getString("morada");
+                        row[5] = rs.getString("cod_postal");
+                        row[6] = rs.getInt("nif");
+                        row[7] = rs.getString("pais");
+                        row[8] = rs.getString("tipo");
+                        model.addRow(row);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(luri_login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                case "Tipo":
+                    // code block
+                    
+                      try {
+                    db = new DBWorker(server, user, password, baseDados);
+
+                    DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+                    Object[] row = new Object[9];
+                    model.setRowCount(0);
+                    String s = "SELECT * FROM fornecedor where " + pesquisa + " like '" + txt_filtro.getText() + "%';";
+
+                    ResultSet rs = db.executeQuery(s);
+
+                    while (rs.next()) {
+
+                        row[0] = rs.getInt("id");
+                        row[1] = rs.getString("nome");
+                        row[2] = rs.getString("email");
+                        row[3] = rs.getString("contacto");
+                        row[4] = rs.getString("morada");
+                        row[5] = rs.getString("cod_postal");
+                        row[6] = rs.getInt("nif");
+                        row[7] = rs.getString("pais");
+                        row[8] = rs.getString("tipo");
+                        model.addRow(row);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(luri_login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+                default:
+                // code block
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(luri_login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btn_pesquisarActionPerformed
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+
+        int linha = tbl_fornecedor.getSelectedRow();
+        int pk = (int) model.getValueAt(linha, 0);
+        Object[] options = {"Sim", "Não"};
+        int dialogResult;
+
+        dialogResult = JOptionPane.showOptionDialog(
+                null,
+                "Confirma a eliminação do fornecedor " + tbl_fornecedor.getValueAt(linha, 0) + "?",
+                "ATENÇÃO!",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+        //se clicou sim faz ..., senão, faz ... :
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            try {
+                String user = "luri";
+                String password = "123.Abc";
+                String baseDados = "luridb";
+                String server = "n1nlmysql13plsk.secureserver.net";
+//            String user = "root";
+//            String password = "";
+//            String baseDados = "luridb";
+//            String server = "127.0.0.1";
+                DBWorker db;
+                db = new DBWorker(server, user, password, baseDados);
+
+                String s = "Delete from fornecedor where id =" + pk + ";";
+
+                if (db.executeUpdate(s) > 0) {
+                    JOptionPane.showMessageDialog(this, "Fornecedor eliminado com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Algo de errado não está certo!!");
+                    System.out.println(s);
+                }
+                listar_tabela();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Algo não correu bem");
+            }
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+            int linha = tbl_fornecedor.getSelectedRow();
+            id_edit = (int) model.getValueAt(linha, 0);
+            txt_nome.setText((String) tbl_fornecedor.getValueAt(linha, 0));
+            txt_morada.setText((String) tbl_fornecedor.getValueAt(linha, 3));
+            txt_nif.setText(Integer.toString((int) tbl_fornecedor.getValueAt(linha, 5)));
+            txt_codpostal.setText((String) tbl_fornecedor.getValueAt(linha, 4));
+            cbx_pais.setSelectedItem((String) tbl_fornecedor.getValueAt(linha, 6));
+            cbx_tipo.setSelectedItem((String) tbl_fornecedor.getValueAt(linha, 7));
+            txt_email.setText((String) tbl_fornecedor.getValueAt(linha, 1));
+            txt_telm.setText((String) tbl_fornecedor.getValueAt(linha, 2));
+
+            btn_adicionar.setText("Editar");
+            jTabbedPane1.setSelectedIndex(0);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "Por favor selecione um fornecedor!");
+        }
+
+    }//GEN-LAST:event_btn_editarActionPerformed
+
+    private void listar_tabela() {
+        try {
+            String user = "luri";
+            String password = "123.Abc";
+            String baseDados = "luridb";
+            String server = "n1nlmysql13plsk.secureserver.net";
+//            String user = "root";
+//            String password = "";
+//            String baseDados = "luridb";
+//            String server = "127.0.0.1";
+            DBWorker db;
+            db = new DBWorker(server, user, password, baseDados);
+
+            DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+            Object[] row = new Object[9];
+
+            String s = "SELECT * FROM fornecedor;";
+
+            ResultSet rs = db.executeQuery(s);
+            model.setRowCount(0);
+            while (rs.next()) {
+
+                row[0] = rs.getInt("id");
+                row[1] = rs.getString("nome");
+                row[2] = rs.getString("email");
+                row[3] = rs.getString("contacto");
+                row[4] = rs.getString("morada");
+                row[5] = rs.getString("cod_postal");
+                row[6] = rs.getInt("nif");
+                row[7] = rs.getString("pais");
+                row[8] = rs.getString("tipo");
+                model.addRow(row);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(luri_login.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void limpa(){
+        txt_nome.setText("");
+        txt_email.setText("");
+        txt_nif.setText("");
+        txt_morada.setText("");
+        txt_telm.setText("");
+        txt_codpostal.setText("");
+        cbx_pais.setSelectedIndex(0);
+        cbx_tipo.setSelectedIndex(0);
+    }
+
+    private int id_edit;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_adicionar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JButton btn_editar;
+    private javax.swing.JButton btn_eliminar;
+    private javax.swing.JButton btn_pesquisar;
+    private javax.swing.JComboBox<String> cbx_filtro;
+    private javax.swing.JComboBox<String> cbx_pais;
+    private javax.swing.JComboBox<String> cbx_tipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -329,13 +689,13 @@ public class Fornecedores extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTable tbl_fornecedor;
+    private javax.swing.JTextField txt_codpostal;
+    private javax.swing.JTextField txt_email;
+    private javax.swing.JTextField txt_filtro;
+    private javax.swing.JTextField txt_morada;
+    private javax.swing.JTextField txt_nif;
+    private javax.swing.JTextField txt_nome;
+    private javax.swing.JTextField txt_telm;
     // End of variables declaration//GEN-END:variables
 }
