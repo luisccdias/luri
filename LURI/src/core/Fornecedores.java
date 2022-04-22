@@ -46,7 +46,7 @@ public class Fornecedores extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_titulo = new javax.swing.JLabel();
         txt_nome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txt_morada = new javax.swing.JTextField();
@@ -84,8 +84,8 @@ public class Fornecedores extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setText("Nome:");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        jLabel2.setText("Adicionar fornecedor");
+        lbl_titulo.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        lbl_titulo.setText("Adicionar fornecedor");
 
         txt_nome.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
@@ -177,14 +177,14 @@ public class Fornecedores extends javax.swing.JPanel {
                                 .addComponent(txt_telm))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addComponent(jLabel2)))
+                        .addComponent(lbl_titulo)))
                 .addContainerGap(327, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addComponent(jLabel2)
+                .addComponent(lbl_titulo)
                 .addGap(96, 96, 96)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -227,7 +227,7 @@ public class Fornecedores extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(85, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 905, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(85, 85, 85))
         );
@@ -280,7 +280,7 @@ public class Fornecedores extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1075, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1055, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btn_eliminar)
@@ -325,7 +325,7 @@ public class Fornecedores extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1060, Short.MAX_VALUE)
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -335,7 +335,7 @@ public class Fornecedores extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -404,12 +404,12 @@ public class Fornecedores extends javax.swing.JPanel {
                     String tipo = (String) cbx_tipo.getSelectedItem();
                     String email = txt_email.getText();
                     String telm = txt_telm.getText();
-                 
+
                     String s = "UPDATE fornecedor "
-                            + "SET nome = '"+nome+"', morada = '"+morada+"', nif = '"+Integer.parseInt(nif)+"', cod_postal = '"+cod_postal+"', pais = '"+pais+"', "
-                            + "tipo = '"+tipo+"', email = '"+email+"', contacto = '"+telm+"' "
-                            + "WHERE id ="+id_edit+";";
-                    
+                            + "SET nome = '" + nome + "', morada = '" + morada + "', nif = '" + Integer.parseInt(nif) + "', cod_postal = '" + cod_postal + "', pais = '" + pais + "', "
+                            + "tipo = '" + tipo + "', email = '" + email + "', contacto = '" + telm + "' "
+                            + "WHERE id =" + id_edit + ";";
+
                     db.executeUpdate(s);
                     System.out.println(s);
                     JOptionPane.showMessageDialog(this, "Dados Alterados com sucesso!");
@@ -421,6 +421,7 @@ public class Fornecedores extends javax.swing.JPanel {
             }
             listar_tabela();
             limpa();
+            lbl_titulo.setText("Adicionar Fornecedor");
             btn_adicionar.setText("Adicionar");
         }
 
@@ -591,24 +592,41 @@ public class Fornecedores extends javax.swing.JPanel {
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
 
-        try {
-            DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
-            int linha = tbl_fornecedor.getSelectedRow();
-            id_edit = (int) model.getValueAt(linha, 0);
-            txt_nome.setText((String) tbl_fornecedor.getValueAt(linha, 0));
-            txt_morada.setText((String) tbl_fornecedor.getValueAt(linha, 3));
-            txt_nif.setText(Integer.toString((int) tbl_fornecedor.getValueAt(linha, 5)));
-            txt_codpostal.setText((String) tbl_fornecedor.getValueAt(linha, 4));
-            cbx_pais.setSelectedItem((String) tbl_fornecedor.getValueAt(linha, 6));
-            cbx_tipo.setSelectedItem((String) tbl_fornecedor.getValueAt(linha, 7));
-            txt_email.setText((String) tbl_fornecedor.getValueAt(linha, 1));
-            txt_telm.setText((String) tbl_fornecedor.getValueAt(linha, 2));
+        Object[] options = {"Sim", "Não"};
+        int dialogResult;
+        int linha = tbl_fornecedor.getSelectedRow();
+        dialogResult = JOptionPane.showOptionDialog(
+                null,
+                "Quer editar os dados do fornecedor: " + tbl_fornecedor.getValueAt(linha, 0) + "?",
+                "ATENÇÃO!",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+        //se clicou sim faz ..., senão, faz ... :
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            try {
+                DefaultTableModel model = (DefaultTableModel) tbl_fornecedor.getModel();
+                id_edit = (int) model.getValueAt(linha, 0);
+                txt_nome.setText((String) tbl_fornecedor.getValueAt(linha, 0));
+                txt_morada.setText((String) tbl_fornecedor.getValueAt(linha, 3));
+                txt_nif.setText(Integer.toString((int) tbl_fornecedor.getValueAt(linha, 5)));
+                txt_codpostal.setText((String) tbl_fornecedor.getValueAt(linha, 4));
+                cbx_pais.setSelectedItem((String) tbl_fornecedor.getValueAt(linha, 6));
+                cbx_tipo.setSelectedItem((String) tbl_fornecedor.getValueAt(linha, 7));
+                txt_email.setText((String) tbl_fornecedor.getValueAt(linha, 1));
+                txt_telm.setText((String) tbl_fornecedor.getValueAt(linha, 2));
+                lbl_titulo.setText("Editar Fornecedor");
+                btn_adicionar.setText("Editar");
+                jTabbedPane1.setSelectedIndex(0);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(this, "Por favor selecione um fornecedor!");
+            }
 
-            btn_adicionar.setText("Editar");
-            jTabbedPane1.setSelectedIndex(0);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(this, "Por favor selecione um fornecedor!");
         }
+
 
     }//GEN-LAST:event_btn_editarActionPerformed
 
@@ -651,8 +669,8 @@ public class Fornecedores extends javax.swing.JPanel {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void limpa(){
+
+    private void limpa() {
         txt_nome.setText("");
         txt_email.setText("");
         txt_nif.setText("");
@@ -675,7 +693,6 @@ public class Fornecedores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -689,6 +706,7 @@ public class Fornecedores extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lbl_titulo;
     private javax.swing.JTable tbl_fornecedor;
     private javax.swing.JTextField txt_codpostal;
     private javax.swing.JTextField txt_email;
