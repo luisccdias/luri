@@ -35,10 +35,10 @@ public class luri_main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btn_fornecedores = new javax.swing.JButton();
         btn_utilizador = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1280, 768));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(180, 768));
@@ -57,6 +57,13 @@ public class luri_main extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -64,6 +71,7 @@ public class luri_main extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
                     .addComponent(btn_utilizador)
                     .addComponent(btn_fornecedores))
                 .addContainerGap(57, Short.MAX_VALUE))
@@ -75,6 +83,8 @@ public class luri_main extends javax.swing.JFrame {
                 .addComponent(btn_fornecedores)
                 .addGap(28, 28, 28)
                 .addComponent(btn_utilizador)
+                .addGap(34, 34, 34)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -123,11 +133,19 @@ public class luri_main extends javax.swing.JFrame {
     private void btn_utilizadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_utilizadorActionPerformed
         Utilizador u = new Utilizador();
 
-  
         jPanel3.add(u, BorderLayout.CENTER);
 
         jPanel3.validate();
     }//GEN-LAST:event_btn_utilizadorActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Fatura f = new Fatura();
+
+        jPanel3.add(f, BorderLayout.CENTER);
+
+        jPanel3.validate();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,6 +185,7 @@ public class luri_main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_fornecedores;
     private javax.swing.JButton btn_utilizador;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
